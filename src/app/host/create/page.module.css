@@ -1,0 +1,145 @@
+.container {
+    min-height: 100vh;
+    background: var(--surface);
+    color: var(--foreground);
+    padding-bottom: 5rem;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    background: rgba(17, 17, 17, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.titleInput {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    width: 100%;
+    max-width: 600px;
+    outline: none;
+}
+
+.saveBtn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.questionsList {
+    max-width: 800px;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.questionCard {
+    background: #000;
+    border: 1px solid var(--border);
+    padding: 2rem;
+    border-radius: 16px;
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.timeInput {
+    background: #222;
+    border: 1px solid #333;
+    color: #fff;
+    padding: 0.3rem;
+    border-radius: 4px;
+    width: 60px;
+    margin-left: auto;
+    text-align: center;
+}
+
+.secondsLabel {
+    margin-left: 0.5rem;
+}
+
+.questionInput {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #333;
+    font-size: 1.2rem;
+    color: #fff;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+    outline: none;
+}
+
+.questionInput:focus {
+    border-bottom-color: var(--accent);
+}
+
+.optionsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.optionRow {
+    background: #1a1a1a;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.optionRow.correct {
+    border-color: #00E08F;
+    background: rgba(0, 224, 143, 0.1);
+}
+
+.correct .optionMarker {
+    background: #00E08F;
+}
+
+.optionMarker {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #444;
+    margin-right: 1rem;
+}
+
+.optionRow input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    width: 100%;
+    outline: none;
+}
+
+.addBtn {
+    background: var(--secondary);
+    color: #fff;
+    border: none;
+    padding: 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}

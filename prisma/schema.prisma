@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  role          String    @default("HOST") // HOST, ADMIN
+  createdAt     DateTime  @default(now())
+  quizzes       Quiz[]
+  sessions      Session[]
+}
+
+model Quiz {
+  id          String     @id @default(cuid())
+  ownerId     String
+  owner       User       @relation(fields: [ownerId], references: [id])
+  title       String
+  description String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  questions   Question[]
+  sessions    Session[]
+}
+
+model Question {
+  id          String   @id @default(cuid())
+  quizId      String
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  text        String
+  type        String   // MCQ, TRUE_FALSE
+  timeLimit   Int      @default(30)
+  options     String[] // JSON string or array if supported, simplified to string array for now in Postgres
+  correctOptionIndex Int
+  order       Int      @default(0)
+}
+
+model Session {
+  id        String   @id @default(cuid()) // This can be the join code or a separate UUID
+  joinCode  String   @unique
+  quizId    String
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
+  hostId    String
+  host      User     @relation(fields: [hostId], references: [id])
+  status    String   @default("WAITING") // WAITING, ACTIVE, ENDED (Using string for simplicity vs Enum)
+  startedAt DateTime?
+  endedAt   DateTime?
+}

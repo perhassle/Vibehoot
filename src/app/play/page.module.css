@@ -1,0 +1,90 @@
+.container {
+    min-height: 100vh;
+    background: #46178F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    color: #fff;
+}
+
+.card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+    color: #46178F;
+    text-align: center;
+    font-weight: 900;
+}
+
+.input {
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    outline: none;
+    text-align: center;
+}
+
+.input:focus {
+    border-color: #46178F;
+}
+
+.joinBtn {
+    background: #333;
+    color: #fff;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.center {
+    text-align: center;
+}
+
+.blink {
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.answersGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+    width: 100%;
+    height: 300px;
+}
+
+.answerBtn {
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.answerBtn:active {
+    transform: scale(0.95);
+}

@@ -1,0 +1,103 @@
+.container {
+    min-height: 100vh;
+    background: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.lobby {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.lobbyHeader {
+    padding: 3rem;
+    background: linear-gradient(180deg, #111 0%, transparent 100%);
+    text-align: center;
+}
+
+.joinLabel {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+}
+
+.joinCode {
+    display: block;
+    font-size: 6rem;
+    font-weight: 900;
+    letter-spacing: 10px;
+    color: var(--accent);
+}
+
+.playersGrid {
+    flex: 1;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    align-content: start;
+}
+
+.playerCard {
+    background: #222;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.footer {
+    padding: 2rem;
+    background: #111;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #333;
+}
+
+.playerCount {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.startBtn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 1rem 3rem;
+    border-radius: 50px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.startBtn:hover {
+    transform: scale(1.05);
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.gameView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
