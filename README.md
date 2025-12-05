@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vibehoot
+
+Real-time multiplayer quiz game - Kahoot clone built with Next.js, Socket.io, Prisma and Redis.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- Docker (for PostgreSQL and Redis)
+
+### Setup
 
 ```bash
+# Install dependencies
+npm install
+
+# Start infrastructure
+docker-compose up -d
+
+# Generate Prisma client and push schema
+npx prisma generate
+npx prisma db push
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## JSON Import Format
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+You can import quiz questions using JSON. Go to **Host Dashboard** → **Create New Quiz** → **Import JSON**.
 
-## Learn More
+### Format
 
-To learn more about Next.js, take a look at the following resources:
+```json
+[
+  {
+    "question": "What is the primary purpose of SEO?",
+    "options": [
+      "Increase paid ad visibility",
+      "Improve organic search visibility",
+      "Replace social media marketing",
+      "Track competitor budgets"
+    ],
+    "correct_index": 1
+  },
+  {
+    "question": "Which factor is most important for on-page SEO?",
+    "options": [
+      "Keyword relevance",
+      "Image file size only",
+      "Having as many pages as possible",
+      "Using multiple domains"
+    ],
+    "correct_index": 0
+  }
+]
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Fields
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Field | Type | Description |
+|-------|------|-------------|
+| `question` | string | The question text |
+| `options` | string[] | Array of 2-4 answer options |
+| `correct_index` | number | Index of the correct answer (0-based) |
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Tech Stack
+
+- **Frontend**: Next.js 16, React 19
+- **Real-time**: Socket.io
+- **Database**: PostgreSQL with Prisma
+- **Cache**: Redis
+- **Testing**: Playwright

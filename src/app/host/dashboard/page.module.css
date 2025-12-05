@@ -79,15 +79,41 @@
     font-size: 0.9rem;
 }
 
+.cardActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+.editBtn {
+    flex: 1;
+    background: transparent;
+    color: #888;
+    text-align: center;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.editBtn:hover {
+    background: var(--surface);
+    color: #fff;
+    border-color: #fff;
+}
+
 .playBtn {
+    flex: 2;
     background: #fff;
     color: #000;
     text-align: center;
     padding: 0.8rem;
     border-radius: 8px;
     font-weight: 700;
-    margin-top: auto;
     transition: transform 0.2s;
+    text-decoration: none;
 }
 
 .playBtn:hover {
