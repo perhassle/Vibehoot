@@ -91,8 +91,10 @@ export default function EditQuiz() {
             const valid = parsed.every((q: any) =>
                 q.question &&
                 Array.isArray(q.options) &&
-                q.options.length >= 2 &&
-                typeof q.correct_index === 'number'
+                q.options.length === 4 &&
+                typeof q.correct_index === 'number' &&
+                q.correct_index >= 0 &&
+                q.correct_index < 4
             );
             setJsonValid(valid && parsed.length > 0);
             setQuestionCount(valid ? parsed.length : 0);
@@ -124,7 +126,7 @@ export default function EditQuiz() {
                 }
                 return {
                     text: q.question,
-                    options: q.options.slice(0, 4),
+                    options: q.options,
                     correctOptionIndex: q.correct_index,
                     timeLimit: 20,
                     type: 'MCQ' as const
