@@ -35,9 +35,14 @@ export default function HostDashboard() {
                         <div key={quiz.id} className={styles.quizCard}>
                             <h3>{quiz.title}</h3>
                             <p>{quiz._count.questions} questions</p>
-                            <Link href={`/host/game/${quiz.id}`} className={styles.playBtn}>
-                                Host Game
-                            </Link>
+                            <div className={styles.cardActions}>
+                                <Link href={`/host/edit/${quiz.id}`} className={styles.editBtn}>
+                                    Edit
+                                </Link>
+                                <Link href={`/host/game/${quiz.id}`} className={styles.playBtn}>
+                                    Host Game
+                                </Link>
+                            </div>
                         </div>
                     ))}
                     {quizzes.length === 0 && (

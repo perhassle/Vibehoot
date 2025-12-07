@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import styles from './page.module.css';
+import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import styles from '../../create/page.module.css';
 
 interface Question {
     text: string;
@@ -18,19 +18,21 @@ interface JsonQuestion {
     correct_index: number;
 }
 
-export default function CreateQuiz() {
+export default function EditQuiz() {
     const router = useRouter();
+    const params = useParams();
+    const quizId = params.id as string;
+
     const [title, setTitle] = useState('');
-    const [questions, setQuestions] = useState<Question[]>([
-        { text: '', options: ['', '', '', ''], correctOptionIndex: 0, timeLimit: 20, type: 'MCQ' }
-    ]);
+    const [questions, setQuestions] = useState<Question[]>([]);
     const [loading, setLoading] = useState(false);
+    const [initialLoading, setInitialLoading] = useState(true);
     const [showImportModal, setShowImportModal] = useState(false);
     const [jsonInput, setJsonInput] = useState('');
-    const [importTitle, setImportTitle] = useState('');
     const [importError, setImportError] = useState('');
     const [jsonValid, setJsonValid] = useState<boolean | null>(null);
     const [questionCount, setQuestionCount] = useState(0);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     const exampleJson = `[
   {
@@ -44,6 +46,34 @@ export default function CreateQuiz() {
     "correct_index": 2
   }
 ]`;
+
+    useEffect(() => {
+        const loadQuiz = async () => {
+            try {
+                const res = await fetch(`/api/quizzes/${quizId}`);
+                if (res.ok) {
+                    const quiz = await res.json();
+                    setTitle(quiz.title);
+                    setQuestions(quiz.questions.map((q: any) => ({
+                        text: q.text,
+                        options: q.options,
+                        correctOptionIndex: q.correctOptionIndex,
+                        timeLimit: q.timeLimit,
+                        type: q.type
+                    })));
+                } else {
+                    alert('Quiz not found');
+                    router.push('/host/dashboard');
+                }
+            } catch (e) {
+                alert('Error loading quiz');
+                router.push('/host/dashboard');
+            } finally {
+                setInitialLoading(false);
+            }
+        };
+        loadQuiz();
+    }, [quizId, router]);
 
     const validateJson = (input: string) => {
         if (!input.trim()) {
@@ -80,10 +110,6 @@ export default function CreateQuiz() {
 
     const importFromJson = () => {
         setImportError('');
-        if (!importTitle.trim()) {
-            setImportError('Quiz title is required');
-            return;
-        }
         try {
             const parsed: JsonQuestion[] = JSON.parse(jsonInput);
             if (!Array.isArray(parsed)) {
@@ -104,11 +130,12 @@ export default function CreateQuiz() {
                     type: 'MCQ' as const
                 };
             });
-            setTitle(importTitle.trim());
+            // Replace all existing questions
             setQuestions(importedQuestions);
             setShowImportModal(false);
             setJsonInput('');
-            setImportTitle('');
+            setJsonValid(null);
+            setQuestionCount(0);
         } catch (e: any) {
             setImportError(e.message || 'Invalid JSON format');
         }
@@ -116,6 +143,12 @@ export default function CreateQuiz() {
 
     const addQuestion = () => {
         setQuestions([...questions, { text: '', options: ['', '', '', ''], correctOptionIndex: 0, timeLimit: 20, type: 'MCQ' }]);
+    };
+
+    const removeQuestion = (index: number) => {
+        if (questions.length > 1) {
+            setQuestions(questions.filter((_, i) => i !== index));
+        }
     };
 
     const updateQuestion = (index: number, field: keyof Question, value: any) => {
@@ -133,8 +166,8 @@ export default function CreateQuiz() {
     const saveQuiz = async () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/quizzes', {
-                method: 'POST',
+            const res = await fetch(`/api/quizzes/${quizId}`, {
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ title, questions })
             });
@@ -150,6 +183,29 @@ export default function CreateQuiz() {
         }
     };
 
+    const deleteQuiz = async () => {
+        try {
+            const res = await fetch(`/api/quizzes/${quizId}`, {
+                method: 'DELETE'
+            });
+            if (res.ok) {
+                router.push('/host/dashboard');
+            } else {
+                alert('Failed to delete');
+            }
+        } catch (e) {
+            alert('Error deleting');
+        }
+    };
+
+    if (initialLoading) {
+        return (
+            <div className={styles.container}>
+                <div className={styles.loadingState}>Loading quiz...</div>
+            </div>
+        );
+    }
+
     return (
         <div className={styles.container}>
             <header className={styles.header}>
@@ -160,25 +216,44 @@ export default function CreateQuiz() {
                     onChange={(e) => setTitle(e.target.value)}
                 />
                 <div className={styles.headerActions}>
+                    <button onClick={() => setShowDeleteConfirm(true)} className={styles.deleteBtn}>
+                        Delete
+                    </button>
                     <button onClick={() => setShowImportModal(true)} className={styles.importBtn}>
                         Import JSON
                     </button>
                     <button onClick={saveQuiz} className={styles.saveBtn} disabled={loading}>
-                        {loading ? 'Saving...' : 'Save Quiz'}
+                        {loading ? 'Saving...' : 'Save Changes'}
                     </button>
                 </div>
             </header>
+
+            {showDeleteConfirm && (
+                <div className={styles.modalOverlay} onClick={() => setShowDeleteConfirm(false)}>
+                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+                        <h2>Delete Quiz?</h2>
+                        <p className={styles.deleteWarning}>
+                            This will permanently delete "{title}" and all its questions. This action cannot be undone.
+                        </p>
+                        <div className={styles.modalActions}>
+                            <button onClick={() => setShowDeleteConfirm(false)} className={styles.cancelBtn}>
+                                Cancel
+                            </button>
+                            <button onClick={deleteQuiz} className={styles.deleteConfirmBtn}>
+                                Delete Quiz
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {showImportModal && (
                 <div className={styles.modalOverlay} onClick={() => setShowImportModal(false)}>
                     <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                         <h2>Import Questions from JSON</h2>
-                        <input
-                            className={styles.importTitleInput}
-                            placeholder="Quiz Title (required)"
-                            value={importTitle}
-                            onChange={(e) => setImportTitle(e.target.value)}
-                        />
+                        <p className={styles.importWarning}>
+                            This will replace all existing questions!
+                        </p>
                         <div className={styles.jsonStatus}>
                             {jsonValid === true && (
                                 <span className={styles.validStatus}>✓ Valid JSON ({questionCount} questions)</span>
@@ -199,8 +274,8 @@ export default function CreateQuiz() {
                             <button onClick={() => setShowImportModal(false)} className={styles.cancelBtn}>
                                 Cancel
                             </button>
-                            <button onClick={importFromJson} className={styles.confirmBtn}>
-                                Import Questions
+                            <button onClick={importFromJson} className={styles.confirmBtn} disabled={!jsonValid}>
+                                Replace All Questions
                             </button>
                         </div>
                     </div>
@@ -219,6 +294,15 @@ export default function CreateQuiz() {
                                 className={styles.timeInput}
                             />
                             <span className={styles.secondsLabel}>sec</span>
+                            {questions.length > 1 && (
+                                <button
+                                    onClick={() => removeQuestion(qIndex)}
+                                    className={styles.removeQuestionBtn}
+                                    title="Remove question"
+                                >
+                                    ✕
+                                </button>
+                            )}
                         </div>
 
                         <input

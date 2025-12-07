@@ -29,6 +29,28 @@
     outline: none;
 }
 
+.headerActions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.importBtn {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.importBtn:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
 .saveBtn {
     background: var(--accent);
     color: #fff;
@@ -142,4 +164,201 @@
     border-radius: 12px;
     font-weight: 600;
     cursor: pointer;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.modal {
+    background: #111;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal h2 {
+    margin: 0 0 1rem 0;
+    color: #fff;
+}
+
+.importTitleInput {
+    width: 100%;
+    background: #000;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: #fff;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    outline: none;
+}
+
+.importTitleInput:focus {
+    border-color: var(--accent);
+}
+
+.jsonStatus {
+    min-height: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.validStatus {
+    color: #00E08F;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.invalidStatus {
+    color: #E21B3C;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.validBorder {
+    border-color: #00E08F !important;
+}
+
+.invalidBorder {
+    border-color: #E21B3C !important;
+}
+
+.modalHint {
+    color: #888;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    font-family: monospace;
+}
+
+.jsonTextarea {
+    width: 100%;
+    background: #000;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: #fff;
+    padding: 1rem;
+    font-family: monospace;
+    font-size: 0.9rem;
+    resize: vertical;
+    outline: none;
+}
+
+.jsonTextarea:focus {
+    border-color: var(--accent);
+}
+
+.errorText {
+    color: #E21B3C;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.modalActions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.cancelBtn {
+    background: transparent;
+    color: #888;
+    border: 1px solid #444;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.confirmBtn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.confirmBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.deleteBtn {
+    background: transparent;
+    color: #E21B3C;
+    border: 1px solid #E21B3C;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.deleteBtn:hover {
+    background: #E21B3C;
+    color: #fff;
+}
+
+.deleteConfirmBtn {
+    background: #E21B3C;
+    color: #fff;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.deleteWarning {
+    color: #888;
+    margin: 1rem 0;
+    line-height: 1.5;
+}
+
+.importWarning {
+    color: #D89E00;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.loadingState {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    color: #888;
+    font-size: 1.2rem;
+}
+
+.removeQuestionBtn {
+    background: transparent;
+    color: #666;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.3rem 0.6rem;
+    margin-left: 1rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.removeQuestionBtn:hover {
+    background: #E21B3C;
+    color: #fff;
 }
