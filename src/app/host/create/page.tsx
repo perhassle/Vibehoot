@@ -100,9 +100,11 @@ export default function CreateQuiz() {
                     !Number.isInteger(q.correct_index) || q.correct_index < 0 || q.correct_index >= q.options.length) {
                     throw new Error(`Invalid question format at index ${index}`);
                 }
+                // Pad options to always have exactly 4
+                const paddedOptions = [...q.options.slice(0, 4), ...Array(Math.max(0, 4 - q.options.length)).fill('')];
                 return {
                     text: q.question,
-                    options: q.options,
+                    options: paddedOptions,
                     correctOptionIndex: q.correct_index,
                     timeLimit: 20,
                     type: 'MCQ' as const
@@ -203,11 +205,7 @@ export default function CreateQuiz() {
                             <button onClick={() => setShowImportModal(false)} className={styles.cancelBtn}>
                                 Cancel
                             </button>
-                            <button
-                                onClick={importFromJson}
-                                className={styles.confirmBtn}
-                                disabled={jsonValid !== true || importTitle.trim().length === 0}
-                            >
+                            <button onClick={importFromJson} className={styles.confirmBtn} disabled={jsonValid !== true || importTitle.trim().length === 0}>
                                 Import Questions
                             </button>
                         </div>

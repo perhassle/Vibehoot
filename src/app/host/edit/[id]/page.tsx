@@ -91,7 +91,7 @@ export default function EditQuiz() {
             const valid = parsed.every((q: any) =>
                 q.question &&
                 Array.isArray(q.options) &&
-                q.options.length >= 2 &&
+                q.options.length === 4 &&
                 typeof q.correct_index === 'number' &&
                 Number.isInteger(q.correct_index) &&
                 q.correct_index >= 0 &&
@@ -126,9 +126,11 @@ export default function EditQuiz() {
                     !Number.isInteger(q.correct_index) || q.correct_index < 0 || q.correct_index >= q.options.length) {
                     throw new Error(`Invalid question format at index ${index}`);
                 }
+                // Pad options to always have exactly 4
+                const paddedOptions = [...q.options.slice(0, 4), ...Array(Math.max(0, 4 - q.options.length)).fill('')];
                 return {
                     text: q.question,
-                    options: q.options,
+                    options: paddedOptions,
                     correctOptionIndex: q.correct_index,
                     timeLimit: 20,
                     type: 'MCQ' as const

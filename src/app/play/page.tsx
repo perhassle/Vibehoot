@@ -29,7 +29,6 @@ export default function PlayerApp() {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [lastResult, setLastResult] = useState<{ correct: boolean; score: number } | null>(null);
     const [totalScore, setTotalScore] = useState(0);
-    const [leaderboard, setLeaderboard] = useState<Player[]>([]);
     const [myRank, setMyRank] = useState(0);
     const socketRef = useRef<Socket | null>(null);
 
@@ -81,16 +80,22 @@ export default function PlayerApp() {
         });
 
         socket.on('leaderboard_update', (data) => {
-            setLeaderboard(data.leaderboard);
             const rank = data.leaderboard.findIndex((p: Player) => p.id === pid) + 1;
             setMyRank(rank);
+            const myPlayer = data.leaderboard.find((p: Player) => p.id === pid);
+            if (myPlayer) {
+                setTotalScore(myPlayer.score);
+            }
             setStatus('LEADERBOARD');
         });
 
         socket.on('game_ended', (data) => {
-            setLeaderboard(data.leaderboard);
             const rank = data.leaderboard.findIndex((p: Player) => p.id === pid) + 1;
             setMyRank(rank);
+            const myPlayer = data.leaderboard.find((p: Player) => p.id === pid);
+            if (myPlayer) {
+                setTotalScore(myPlayer.score);
+            }
             setStatus('ENDED');
         });
 
