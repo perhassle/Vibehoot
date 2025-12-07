@@ -102,7 +102,7 @@ export default function CreateQuiz() {
                 }
                 return {
                     text: q.question,
-                    options: q.options.slice(0, 4),
+                    options: q.options,
                     correctOptionIndex: q.correct_index,
                     timeLimit: 20,
                     type: 'MCQ' as const
@@ -203,7 +203,11 @@ export default function CreateQuiz() {
                             <button onClick={() => setShowImportModal(false)} className={styles.cancelBtn}>
                                 Cancel
                             </button>
-                            <button onClick={importFromJson} className={styles.confirmBtn}>
+                            <button
+                                onClick={importFromJson}
+                                className={styles.confirmBtn}
+                                disabled={jsonValid !== true || importTitle.trim().length === 0}
+                            >
                                 Import Questions
                             </button>
                         </div>
