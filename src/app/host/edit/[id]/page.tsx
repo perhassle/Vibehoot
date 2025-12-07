@@ -125,13 +125,11 @@ export default function EditQuiz() {
                 if (!q.question || !Array.isArray(q.options) || typeof q.correct_index !== 'number') {
                     throw new Error(`Invalid question format at index ${index}`);
                 }
+                // Pad options to always have exactly 4
+                const paddedOptions = [...q.options.slice(0, 4), ...Array(Math.max(0, 4 - q.options.length)).fill('')];
                 return {
                     text: q.question,
-                    options: (() => {
-                        const opts = q.options.slice(0, 4);
-                        while (opts.length < 4) opts.push('');
-                        return opts;
-                    })(),
+                    options: paddedOptions,
                     correctOptionIndex: q.correct_index,
                     timeLimit: 20,
                     type: 'MCQ' as const
