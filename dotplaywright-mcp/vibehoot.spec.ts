@@ -211,6 +211,8 @@ test.describe('Vibehoot App', () => {
 
       // Step 2: Find the created quiz and start hosting
       await expect(hostPage.getByText(quizName)).toBeVisible();
+
+      // Step 2: Find the created quiz and start hosting
       // Find the quiz card containing our quiz and click its Host Game link
       const quizCard = hostPage.locator('[class*="quizCard"]').filter({ hasText: quizName });
       await quizCard.getByRole('link', { name: 'Host Game' }).click();

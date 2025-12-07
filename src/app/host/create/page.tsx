@@ -96,7 +96,8 @@ export default function CreateQuiz() {
                 throw new Error('JSON must contain at least one question');
             }
             const importedQuestions: Question[] = parsed.map((q, index) => {
-                if (!q.question || !Array.isArray(q.options) || typeof q.correct_index !== 'number') {
+                if (!q.question || !Array.isArray(q.options) || typeof q.correct_index !== 'number' ||
+                    !Number.isInteger(q.correct_index) || q.correct_index < 0 || q.correct_index >= q.options.length) {
                     throw new Error(`Invalid question format at index ${index}`);
                 }
                 // Pad options to always have exactly 4
