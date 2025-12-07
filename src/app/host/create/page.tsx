@@ -98,7 +98,7 @@ export default function CreateQuiz() {
                 }
                 return {
                     text: q.question,
-                    options: q.options.slice(0, 4),
+                    options: q.options,
                     correctOptionIndex: q.correct_index,
                     timeLimit: 20,
                     type: 'MCQ' as const
