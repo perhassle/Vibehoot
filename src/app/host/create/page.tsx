@@ -199,7 +199,11 @@ export default function CreateQuiz() {
                             <button onClick={() => setShowImportModal(false)} className={styles.cancelBtn}>
                                 Cancel
                             </button>
-                            <button onClick={importFromJson} className={styles.confirmBtn}>
+                            <button
+                                onClick={importFromJson}
+                                className={styles.confirmBtn}
+                                disabled={jsonValid !== true || importTitle.trim().length === 0}
+                            >
                                 Import Questions
                             </button>
                         </div>
