@@ -61,10 +61,11 @@ export default function CreateQuiz() {
             const valid = parsed.every((q: any) =>
                 q.question &&
                 Array.isArray(q.options) &&
-                q.options.length === 4 &&
+                q.options.length >= 2 &&
                 typeof q.correct_index === 'number' &&
+                Number.isInteger(q.correct_index) &&
                 q.correct_index >= 0 &&
-                q.correct_index < 4
+                q.correct_index < q.options.length
             );
             setJsonValid(valid && parsed.length > 0);
             setQuestionCount(valid ? parsed.length : 0);
@@ -95,9 +96,8 @@ export default function CreateQuiz() {
                 throw new Error('JSON must contain at least one question');
             }
             const importedQuestions: Question[] = parsed.map((q, index) => {
-                if (!q.question || !Array.isArray(q.options) || q.options.length < 2 || 
-                    typeof q.correct_index !== 'number' || !Number.isInteger(q.correct_index) ||
-                    q.correct_index < 0 || q.correct_index >= q.options.length) {
+                if (!q.question || !Array.isArray(q.options) || typeof q.correct_index !== 'number' ||
+                    !Number.isInteger(q.correct_index) || q.correct_index < 0 || q.correct_index >= q.options.length) {
                     throw new Error(`Invalid question format at index ${index}`);
                 }
                 return {
