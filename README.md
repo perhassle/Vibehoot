@@ -15,7 +15,10 @@ Real-time multiplayer quiz game - Kahoot clone built with Next.js, Socket.io, Pr
 # Install dependencies
 npm install
 
-# Start infrastructure
+# Create environment file
+cp .env.example .env
+
+# Start infrastructure (PostgreSQL + Redis)
 docker-compose up -d
 
 # Generate Prisma client and push schema

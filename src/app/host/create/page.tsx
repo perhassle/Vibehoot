@@ -95,7 +95,9 @@ export default function CreateQuiz() {
                 throw new Error('JSON must contain at least one question');
             }
             const importedQuestions: Question[] = parsed.map((q, index) => {
-                if (!q.question || !Array.isArray(q.options) || typeof q.correct_index !== 'number') {
+                if (!q.question || !Array.isArray(q.options) || q.options.length < 2 || 
+                    typeof q.correct_index !== 'number' || !Number.isInteger(q.correct_index) ||
+                    q.correct_index < 0 || q.correct_index >= q.options.length) {
                     throw new Error(`Invalid question format at index ${index}`);
                 }
                 return {
@@ -201,7 +203,11 @@ export default function CreateQuiz() {
                             <button onClick={() => setShowImportModal(false)} className={styles.cancelBtn}>
                                 Cancel
                             </button>
-                            <button onClick={importFromJson} className={styles.confirmBtn}>
+                            <button
+                                onClick={importFromJson}
+                                className={styles.confirmBtn}
+                                disabled={jsonValid !== true || importTitle.trim().length === 0}
+                            >
                                 Import Questions
                             </button>
                         </div>
