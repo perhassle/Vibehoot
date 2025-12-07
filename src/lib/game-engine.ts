@@ -207,11 +207,11 @@ export class GameEngine {
         await redis.set(`session:${joinCode}`, JSON.stringify(state));
 
         // Calculate answer distribution
-        const distribution = [0, 0, 0, 0];
+        const distribution = Array(question.options.length).fill(0);
         let correctCount = 0;
 
         Object.values(state.answers).forEach(answer => {
-            if (answer.optionIndex >= 0 && answer.optionIndex < 4) {
+            if (answer.optionIndex >= 0 && answer.optionIndex < question.options.length) {
                 distribution[answer.optionIndex]++;
             }
             if (answer.optionIndex === question.correctOptionIndex) {

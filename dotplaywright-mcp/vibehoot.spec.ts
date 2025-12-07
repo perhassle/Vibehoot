@@ -1,4 +1,4 @@
-import { test, expect, Browser } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 test.describe('Vibehoot App', () => {
 
@@ -206,6 +206,9 @@ test.describe('Vibehoot App', () => {
       // Wait for redirect to dashboard
       await expect(hostPage).toHaveURL('/host/dashboard', { timeout: 10000 });
 
+      // Assert that the quiz was saved successfully and appears in the dashboard
+      await expect(hostPage.getByText(quizName)).toBeVisible();
+
       // Step 2: Find the created quiz and start hosting
       await expect(hostPage.getByText(quizName)).toBeVisible();
       // Find the quiz card containing our quiz and click its Host Game link
@@ -340,11 +343,13 @@ test.describe('Vibehoot App', () => {
       await player2Context.close();
 
       // Cleanup: Delete the test quiz via API (more reliable than UI)
-      if (quizId) {
-        await hostPage.request.delete(`/api/quizzes/${quizId}`);
+      try {
+        if (quizId) {
+          await hostPage.request.delete(`/api/quizzes/${quizId}`);
+        }
+      } finally {
+        await hostContext.close();
       }
-
-      await hostContext.close();
     });
   });
 });
