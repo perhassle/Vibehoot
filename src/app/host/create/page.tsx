@@ -61,7 +61,7 @@ export default function CreateQuiz() {
             const valid = parsed.every((q: any) =>
                 q.question &&
                 Array.isArray(q.options) &&
-                q.options.length >= 2 &&
+                q.options.length === 4 &&
                 typeof q.correct_index === 'number'
             );
             setJsonValid(valid && parsed.length > 0);
