@@ -206,8 +206,10 @@ test.describe('Vibehoot App', () => {
       // Wait for redirect to dashboard
       await expect(hostPage).toHaveURL('/host/dashboard', { timeout: 10000 });
 
-      // Step 2: Find the created quiz and start hosting
+      // Assert that the quiz was saved successfully and appears in the dashboard
       await expect(hostPage.getByText(quizName)).toBeVisible();
+
+      // Step 2: Find the created quiz and start hosting
       // Find the quiz card containing our quiz and click its Host Game link
       const quizCard = hostPage.locator('[class*="quizCard"]').filter({ hasText: quizName });
       await quizCard.getByRole('link', { name: 'Host Game' }).click();
