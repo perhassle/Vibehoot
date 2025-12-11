@@ -71,7 +71,7 @@ export class GameEngine {
         const stateRaw = await redis.get(`session:${joinCode}`);
         if (!stateRaw) throw new Error("Session not found");
 
-        const state: GameState = JSON.parse(stateRaw);
+        const state: GameState = JSON.parse(stateRaw as string);
         if (state.status !== 'WAITING') throw new Error("Game already started");
 
         state.players[playerId] = {
@@ -87,7 +87,7 @@ export class GameEngine {
     static async getSession(joinCode: string): Promise<GameState | null> {
         const stateRaw = await redis.get(`session:${joinCode}`);
         if (!stateRaw) return null;
-        return JSON.parse(stateRaw) as GameState;
+        return JSON.parse(stateRaw as string) as GameState;
     }
 
     static async getQuizQuestions(quizId: string): Promise<Question[]> {
